@@ -5,8 +5,9 @@ import {
   DdcOptions,
   Denops,
   FilterOptions,
-} from "https://deno.land/x/ddc_vim@v0.0.5/types.ts";
-import { assertEquals } from "https://deno.land/x/ddc_vim@v0.0.5/deps.ts";
+  SourceOptions,
+} from "https://deno.land/x/ddc_vim@v0.0.7/types.ts";
+import { assertEquals } from "https://deno.land/x/ddc_vim@v0.0.7/deps.ts";
 import { imap, range } from "https://deno.land/x/itertools@v0.1.2/mod.ts";
 
 function splitPages(
@@ -91,6 +92,7 @@ export class Filter extends BaseFilter {
     denops: Denops,
     _context: Context,
     _options: DdcOptions,
+    _sourceOptions: SourceOptions,
     _filterOptions: FilterOptions,
     _filterParams: Record<string, unknown>,
     completeStr: string,
