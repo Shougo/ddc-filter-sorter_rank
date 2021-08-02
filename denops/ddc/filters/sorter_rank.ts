@@ -28,9 +28,11 @@ function calcScore(
 ): number {
   let score = 0;
   if (str.indexOf(completeStr) == 0) {
-    score += 100;
+    score += 200;
   } else if (str.toLowerCase().indexOf(completeStr.toLowerCase()) == 0) {
-    score += 30;
+    score += 60;
+  } else if (str.toLowerCase().indexOf(completeStr.toLowerCase()) > 0) {
+    score += 20;
   }
   score -= str.length * 2;
 
