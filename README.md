@@ -21,6 +21,6 @@ https://github.com/Shougo/ddc.vim
 " Use sorter_rank.
 call ddc#custom#patch_global('sourceOptions', {
       \ '_': {
-      \   'sorters: ['sorter_rank'],
+      \   'sorters': ['sorter_rank'],
       \ })
 ```
