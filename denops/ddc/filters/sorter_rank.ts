@@ -56,7 +56,6 @@ export class Filter extends BaseFilter {
     _filterOptions: FilterOptions,
     _filterParams: Record<string, unknown>,
   ): Promise<void> {
-    const pageSize = 500;
     const maxSize = LINES_MAX;
     const currentLine = (await denops.call("line", ".")) as number;
     const minLines = Math.max(1, currentLine - maxSize);
@@ -64,6 +63,7 @@ export class Filter extends BaseFilter {
       (await denops.call("line", "$")) as number,
       currentLine + maxSize,
     );
+    const pageSize = Math.min(500, maxLines - minLines);
     const pages = (await Promise.all(
       imap(
         splitPages(minLines, maxLines, pageSize),
@@ -77,7 +77,7 @@ export class Filter extends BaseFilter {
         const word = match[0];
         if (
           word in this._cache &&
-          Math.abs(this._cache[word] - currentLine) >=
+          Math.abs(this._cache[word] - currentLine) <=
             Math.abs(linenr - currentLine)
         ) {
           continue;
