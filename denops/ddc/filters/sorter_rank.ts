@@ -3,11 +3,10 @@ import {
   Candidate,
   Context,
   DdcOptions,
-  Denops,
   FilterOptions,
   SourceOptions,
-} from "https://deno.land/x/ddc_vim@v0.0.7/types.ts";
-import { assertEquals } from "https://deno.land/x/ddc_vim@v0.0.7/deps.ts";
+} from "https://deno.land/x/ddc_vim@v0.0.9/types.ts";
+import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.9/deps.ts";
 import { imap, range } from "https://deno.land/x/itertools@v0.1.2/mod.ts";
 
 function splitPages(
