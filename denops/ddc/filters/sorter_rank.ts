@@ -7,18 +7,6 @@ import {
   SourceOptions,
 } from "https://deno.land/x/ddc_vim@v0.0.9/types.ts";
 import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.9/deps.ts";
-import { imap, range } from "https://deno.land/x/itertools@v0.1.2/mod.ts";
-
-function splitPages(
-  minLines: number,
-  maxLines: number,
-  size: number,
-): Iterable<[number, number]> {
-  return imap(
-    range(minLines, /* < */ maxLines + 1, size),
-    (lnum: number) => [lnum, /* <= */ lnum + size - 1],
-  );
-}
 
 function calcScore(
   str: string,
@@ -62,17 +50,10 @@ export class Filter extends BaseFilter {
       (await denops.call("line", "$")) as number,
       currentLine + maxSize,
     );
-    const pageSize = Math.min(500, maxLines - minLines);
-    const pages = (await Promise.all(
-      imap(
-        splitPages(minLines, maxLines, pageSize),
-        ([start, end]: [number, number]) => denops.call("getline", start, end),
-      ),
-    )) as string[][];
 
     this._cache = {};
     let linenr = minLines;
-    for (const line of pages.flatMap((page) => page)) {
+    for (const line of await denops.call("getline", minLines, maxLines)) {
       for (const match of line.matchAll(/[a-zA-Z0-9_]+/g)) {
         const word = match[0];
         if (
