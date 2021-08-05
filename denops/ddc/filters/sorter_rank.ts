@@ -70,6 +70,7 @@ export class Filter extends BaseFilter {
       ),
     )) as string[][];
 
+    this._cache = {};
     let linenr = minLines;
     for (const line of pages.flatMap((page) => page)) {
       for (const match of line.matchAll(/[a-zA-Z0-9_]+/g)) {
