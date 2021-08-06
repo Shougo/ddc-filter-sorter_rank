@@ -5,8 +5,8 @@ import {
   DdcOptions,
   FilterOptions,
   SourceOptions,
-} from "https://deno.land/x/ddc_vim@v0.0.10/types.ts#^";
-import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.10/deps.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.0.11/types.ts#^";
+import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.11/deps.ts#^";
 
 function calcScore(
   str: string,
