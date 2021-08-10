@@ -5,8 +5,8 @@ import {
   DdcOptions,
   FilterOptions,
   SourceOptions,
-} from "https://deno.land/x/ddc_vim@v0.0.11/types.ts#^";
-import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.11/deps.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.0.13/types.ts#^";
+import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.13/deps.ts#^";
 
 function calcScore(
   str: string,
@@ -34,6 +34,8 @@ function calcScore(
 const LINES_MAX = 150;
 
 export class Filter extends BaseFilter {
+  events = ['InsertEnter'];
+
   _cache: Record<string, number> = {};
 
   async onEvent(
