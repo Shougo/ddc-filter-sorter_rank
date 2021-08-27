@@ -6,7 +6,7 @@ import {
   FilterOptions,
   SourceOptions,
 } from "https://deno.land/x/ddc_vim@v0.0.13/types.ts#^";
-import { assertEquals, Denops } from "https://deno.land/x/ddc_vim@v0.0.13/deps.ts#^";
+import { assertEquals, Denops, fn } from "https://deno.land/x/ddc_vim@v0.0.13/deps.ts#^";
 
 function calcScore(
   str: string,
@@ -34,7 +34,7 @@ function calcScore(
 const LINES_MAX = 150;
 
 export class Filter extends BaseFilter {
-  events = ['InsertEnter'];
+  events = ["InsertEnter"] as never[];
 
   _cache: Record<string, number> = {};
 
@@ -55,7 +55,7 @@ export class Filter extends BaseFilter {
 
     this._cache = {};
     let linenr = minLines;
-    for (const line of await denops.call("getline", minLines, maxLines)) {
+    for (const line of await fn.getline(denops, minLines, maxLines)) {
       for (const match of line.matchAll(/[a-zA-Z0-9_]+/g)) {
         const word = match[0];
         if (
