@@ -1,12 +1,8 @@
 import {
   BaseFilter,
   Candidate,
-  Context,
-  DdcOptions,
-  FilterOptions,
-  SourceOptions,
-} from "https://deno.land/x/ddc_vim@v0.0.13/types.ts#^";
-import { assertEquals, Denops, fn } from "https://deno.land/x/ddc_vim@v0.0.13/deps.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.3.0/types.ts#^";
+import { assertEquals, Denops, fn } from "https://deno.land/x/ddc_vim@v0.3.0/deps.ts#^";
 
 function calcScore(
   str: string,
@@ -38,24 +34,20 @@ export class Filter extends BaseFilter {
 
   _cache: Record<string, number> = {};
 
-  async onEvent(
+  async onEvent(args: {
     denops: Denops,
-    _context: Context,
-    _options: DdcOptions,
-    _filterOptions: FilterOptions,
-    _filterParams: Record<string, unknown>,
-  ): Promise<void> {
+  }): Promise<void> {
     const maxSize = LINES_MAX;
-    const currentLine = (await denops.call("line", ".")) as number;
+    const currentLine = (await args.denops.call("line", ".")) as number;
     const minLines = Math.max(1, currentLine - maxSize);
     const maxLines = Math.min(
-      (await denops.call("line", "$")) as number,
+      (await fn.line(args.denops, "$")),
       currentLine + maxSize,
     );
 
     this._cache = {};
     let linenr = minLines;
-    for (const line of await fn.getline(denops, minLines, maxLines)) {
+    for (const line of await fn.getline(args.denops, minLines, maxLines)) {
       for (const match of line.matchAll(/[a-zA-Z0-9_]+/g)) {
         const word = match[0];
         if (
@@ -71,21 +63,16 @@ export class Filter extends BaseFilter {
     }
   }
 
-  async filter(
+  async filter(args: {
     denops: Denops,
-    _context: Context,
-    _options: DdcOptions,
-    _sourceOptions: SourceOptions,
-    _filterOptions: FilterOptions,
-    _filterParams: Record<string, unknown>,
     completeStr: string,
     candidates: Candidate[],
-  ): Promise<Candidate[]> {
-    const linenr = (await denops.call("line", ".")) as number;
+  }): Promise<Candidate[]> {
+    const linenr = await fn.line(args.denops, ".");
 
-    return Promise.resolve(candidates.sort((a, b) => {
-      return calcScore(b.word, completeStr, this._cache, linenr) -
-        calcScore(a.word, completeStr, this._cache, linenr);
+    return Promise.resolve(args.candidates.sort((a, b) => {
+      return calcScore(b.word, args.completeStr, this._cache, linenr) -
+        calcScore(a.word, args.completeStr, this._cache, linenr);
     }));
   }
 }
