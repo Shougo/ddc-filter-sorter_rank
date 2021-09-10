@@ -1,6 +1,7 @@
 import {
   BaseFilter,
   Candidate,
+  DdcOptions,
 } from "https://deno.land/x/ddc_vim@v0.3.0/types.ts#^";
 import { assertEquals, Denops, fn } from "https://deno.land/x/ddc_vim@v0.3.0/deps.ts#^";
 
@@ -23,7 +24,6 @@ function calcScore(
   if (str in cache) {
     score += LINES_MAX - Math.abs(cache[str] - linenr);
   }
-
   return score;
 }
 
@@ -36,6 +36,7 @@ export class Filter extends BaseFilter {
 
   async onEvent(args: {
     denops: Denops,
+    options: DdcOptions,
   }): Promise<void> {
     const maxSize = LINES_MAX;
     const currentLine = (await args.denops.call("line", ".")) as number;
@@ -47,8 +48,9 @@ export class Filter extends BaseFilter {
 
     this._cache = {};
     let linenr = minLines;
+    const pattern = new RegExp(args.options.keywordPattern, 'gu');
     for (const line of await fn.getline(args.denops, minLines, maxLines)) {
-      for (const match of line.matchAll(/[a-zA-Z0-9_]+/g)) {
+      for (const match of line.matchAll(pattern)) {
         const word = match[0];
         if (
           word in this._cache &&
