@@ -2,8 +2,12 @@ import {
   BaseFilter,
   Candidate,
   DdcOptions,
-} from "https://deno.land/x/ddc_vim@v0.3.0/types.ts#^";
-import { assertEquals, Denops, fn } from "https://deno.land/x/ddc_vim@v0.3.0/deps.ts#^";
+} from "https://deno.land/x/ddc_vim@v0.9.0/types.ts#^";
+import {
+  assertEquals,
+  Denops,
+  fn,
+} from "https://deno.land/x/ddc_vim@v0.9.0/deps.ts#^";
 
 function calcScore(
   str: string,
@@ -29,14 +33,14 @@ function calcScore(
 
 const LINES_MAX = 150;
 
-export class Filter extends BaseFilter {
+export class Filter extends BaseFilter<{}> {
   events = ["InsertEnter"] as never[];
 
   _cache: Record<string, number> = {};
 
   async onEvent(args: {
-    denops: Denops,
-    options: DdcOptions,
+    denops: Denops;
+    options: DdcOptions;
   }): Promise<void> {
     const maxSize = LINES_MAX;
     const currentLine = (await args.denops.call("line", ".")) as number;
@@ -48,7 +52,7 @@ export class Filter extends BaseFilter {
 
     this._cache = {};
     let linenr = minLines;
-    const pattern = new RegExp(args.options.keywordPattern, 'gu');
+    const pattern = new RegExp(args.options.keywordPattern, "gu");
     for (const line of await fn.getline(args.denops, minLines, maxLines)) {
       for (const match of line.matchAll(pattern)) {
         const word = match[0];
@@ -66,9 +70,9 @@ export class Filter extends BaseFilter {
   }
 
   async filter(args: {
-    denops: Denops,
-    completeStr: string,
-    candidates: Candidate[],
+    denops: Denops;
+    completeStr: string;
+    candidates: Candidate[];
   }): Promise<Candidate[]> {
     const linenr = await fn.line(args.denops, ".");
 
@@ -77,6 +81,8 @@ export class Filter extends BaseFilter {
         calcScore(a.word, args.completeStr, this._cache, linenr);
     }));
   }
+
+  params(): {} { return {}; }
 }
 
 Deno.test("calcScore", () => {
