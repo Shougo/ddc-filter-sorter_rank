@@ -1,13 +1,13 @@
 import {
   BaseFilter,
-  Candidate,
+  Item,
   DdcOptions,
-} from "https://deno.land/x/ddc_vim@v1.3.0/types.ts";
+} from "https://deno.land/x/ddc_vim@v2.2.0/types.ts";
 import {
   assertEquals,
   Denops,
   fn,
-} from "https://deno.land/x/ddc_vim@v1.3.0/deps.ts";
+} from "https://deno.land/x/ddc_vim@v2.2.0/deps.ts";
 
 function calcScore(
   str: string,
@@ -33,7 +33,9 @@ function calcScore(
 
 const LINES_MAX = 150;
 
-export class Filter extends BaseFilter<{}> {
+type Params = Record<never, never>;
+
+export class Filter extends BaseFilter<Params> {
   events = ["InsertEnter"] as never[];
 
   _cache: Record<string, number> = {};
@@ -72,17 +74,17 @@ export class Filter extends BaseFilter<{}> {
   async filter(args: {
     denops: Denops;
     completeStr: string;
-    candidates: Candidate[];
-  }): Promise<Candidate[]> {
+    items: Item[];
+  }): Promise<Item[]> {
     const linenr = await fn.line(args.denops, ".");
 
-    return Promise.resolve(args.candidates.sort((a, b) => {
+    return Promise.resolve(args.items.sort((a, b) => {
       return calcScore(b.word, args.completeStr, this._cache, linenr) -
         calcScore(a.word, args.completeStr, this._cache, linenr);
     }));
   }
 
-  params(): {} { return {}; }
+  params(): Params { return {}; }
 }
 
 Deno.test("calcScore", () => {

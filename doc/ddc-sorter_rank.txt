@@ -1,0 +1,47 @@
+*ddc-sorter_rank.txt*	Rank sorter for ddc.vim
+
+Author: Shougo <Shougo.Matsu at gmail.com>
+License: MIT license
+
+CONTENTS					*ddc-sorter_rank-contents*
+
+Introduction		|ddc-sorter_rank-introduction|
+Install			|ddc-sorter_rank-install|
+Examples		|ddc-sorter_rank-examples|
+Params			|ddc-sorter_rank-params|
+
+
+==============================================================================
+INTRODUCTION					*ddc-sorter_rank-introduction*
+
+It is matched rank order sorter.  The higher the head matched word or already
+typed or inserted word.
+
+
+==============================================================================
+INSTALL						*ddc-sorter_rank-install*
+
+Please install both "ddc.vim" and "denops.vim".
+
+https://github.com/Shougo/ddc.vim
+https://github.com/vim-denops/denops.vim
+
+You must use neovim 0.5.0+ with sorter_rank configuration.
+
+
+==============================================================================
+EXAMPLES					*ddc-sorter_rank-examples*
+>
+>
+	call ddc#custom#patch_global('sourceOptions', {
+	      \ '_': {
+	      \   'sorters': ['sorter_rank'],
+	      \ }
+	      \ })
+<
+
+==============================================================================
+PARAMS						*ddc-sorter_rank-params*
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
