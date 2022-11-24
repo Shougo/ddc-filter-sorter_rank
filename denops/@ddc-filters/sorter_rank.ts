@@ -40,7 +40,7 @@ export class Filter extends BaseFilter<Params> {
 
   _cache: Record<string, number> = {};
 
-  async onEvent(args: {
+  override async onEvent(args: {
     denops: Denops;
     options: DdcOptions;
   }): Promise<void> {
@@ -71,7 +71,7 @@ export class Filter extends BaseFilter<Params> {
     }
   }
 
-  async filter(args: {
+  override async filter(args: {
     denops: Denops;
     completeStr: string;
     items: Item[];
@@ -84,7 +84,7 @@ export class Filter extends BaseFilter<Params> {
     }));
   }
 
-  params(): Params { return {}; }
+  override params(): Params { return {}; }
 }
 
 Deno.test("calcScore", () => {
