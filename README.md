@@ -1,4 +1,4 @@
-# ddc-sorter_rank
+# ddc-filter-sorter_rank
 
 Matched rank order sorter for ddc.vim
 

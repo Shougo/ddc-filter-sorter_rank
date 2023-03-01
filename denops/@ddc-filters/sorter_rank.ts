@@ -2,12 +2,12 @@ import {
   BaseFilter,
   Item,
   DdcOptions,
-} from "https://deno.land/x/ddc_vim@v3.2.0/types.ts";
+} from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
 import {
   assertEquals,
   Denops,
   fn,
-} from "https://deno.land/x/ddc_vim@v3.2.0/deps.ts";
+} from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
 
 function calcScore(
   str: string,
