@@ -76,6 +76,10 @@ export class Filter extends BaseFilter<Params> {
     completeStr: string;
     items: Item[];
   }): Promise<Item[]> {
+    if (args.completeStr.length === 0) {
+      return args.items;
+    }
+
     const linenr = await fn.line(args.denops, ".");
 
     return Promise.resolve(args.items.sort((a, b) => {
