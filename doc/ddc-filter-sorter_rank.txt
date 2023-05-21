@@ -30,7 +30,6 @@ https://github.com/vim-denops/denops.vim
 ==============================================================================
 EXAMPLES				*ddc-filter-sorter_rank-examples*
 >
->
 	call ddc#custom#patch_global('sourceOptions', #{
 	      \   _: #{
 	      \     sorters: ['sorter_rank'],
