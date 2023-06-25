@@ -2,12 +2,14 @@ import {
   BaseFilter,
   Item,
   DdcOptions,
-} from "https://deno.land/x/ddc_vim@v3.4.0/types.ts";
+} from "https://deno.land/x/ddc_vim@v3.7.0/types.ts";
 import {
   assertEquals,
   Denops,
   fn,
-} from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
+  op,
+} from "https://deno.land/x/ddc_vim@v3.7.0/deps.ts";
+import { vimoption2ts } from "https://deno.land/x/ddc_vim@v3.7.0/util.ts";
 
 function calcScore(
   str: string,
@@ -52,9 +54,16 @@ export class Filter extends BaseFilter<Params> {
       currentLine + maxSize,
     );
 
+    // Convert keywordPattern
+    const iskeyword = await op.iskeyword.getLocal(args.denops);
+    const keywordPattern = "\\k+".replaceAll(
+      /\\k/g,
+      () => "[" + vimoption2ts(iskeyword) + "]",
+    );
+
     this._cache = {};
     let linenr = minLines;
-    const pattern = new RegExp(args.options.keywordPattern, "gu");
+    const pattern = new RegExp(keywordPattern, "gu");
     for (const line of await fn.getline(args.denops, minLines, maxLines)) {
       for (const match of line.matchAll(pattern)) {
         const word = match[0];
