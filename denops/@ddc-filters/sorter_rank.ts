@@ -8,7 +8,7 @@ import {
   Denops,
   fn,
 } from "https://deno.land/x/ddc_vim@v4.3.1/deps.ts";
-import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.3.1/util.ts";
+import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.3.1/utils.ts";
 
 function calcScore(
   str: string,
