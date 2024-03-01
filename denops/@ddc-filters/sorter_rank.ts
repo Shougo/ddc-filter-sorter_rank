@@ -2,13 +2,13 @@ import {
   BaseFilter,
   Item,
   DdcOptions,
-} from "https://deno.land/x/ddc_vim@v4.0.5/types.ts";
+} from "https://deno.land/x/ddc_vim@v4.3.1/types.ts";
 import {
   assertEquals,
   Denops,
   fn,
-} from "https://deno.land/x/ddc_vim@v4.0.5/deps.ts";
-import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.0.5/util.ts";
+} from "https://deno.land/x/ddc_vim@v4.3.1/deps.ts";
+import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.3.1/util.ts";
 
 function calcScore(
   str: string,
@@ -33,6 +33,7 @@ function calcScore(
 }
 
 const LINES_MAX = 150;
+const COLUMNS_MAX = 150;
 
 type Params = Record<string, never>;
 
@@ -63,6 +64,11 @@ export class Filter extends BaseFilter<Params> {
     let linenr = minLines;
     const pattern = new RegExp(keywordPattern, "gu");
     for (const line of await fn.getline(args.denops, minLines, maxLines)) {
+      if (line.length > COLUMNS_MAX) {
+        // Skip too long lines
+        continue;
+      }
+
       for (const match of line.matchAll(pattern)) {
         const word = match[0];
         if (
