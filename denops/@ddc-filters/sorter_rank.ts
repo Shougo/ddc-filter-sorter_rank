@@ -1,14 +1,14 @@
 import {
   BaseFilter,
-  Item,
-  DdcOptions,
-} from "https://deno.land/x/ddc_vim@v4.3.1/types.ts";
-import {
-  assertEquals,
-  Denops,
-  fn,
-} from "https://deno.land/x/ddc_vim@v4.3.1/deps.ts";
-import { convertKeywordPattern } from "https://deno.land/x/ddc_vim@v4.3.1/utils.ts";
+  type Item,
+  type DdcOptions,
+} from "jsr:@shougo/ddc-vim@6.0.0/types";
+import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@6.0.0/utils";
+
+import type { Denops } from "jsr:@denops/core@^7.0.0";
+import * as fn from "jsr:@denops/std@7.0.1/function";
+
+import { assertEquals } from "jsr:@std/assert@1.0.1";
 
 function calcScore(
   str: string,
