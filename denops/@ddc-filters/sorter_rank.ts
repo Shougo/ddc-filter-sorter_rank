@@ -1,14 +1,11 @@
-import {
-  BaseFilter,
-  type Item,
-  type DdcOptions,
-} from "jsr:@shougo/ddc-vim@6.0.0/types";
-import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@6.0.0/utils";
+import { type DdcOptions, type Item } from "jsr:@shougo/ddc-vim@~7.0.0/types";
+import { BaseFilter } from "jsr:@shougo/ddc-vim@~7.0.0/filter";
+import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@~7.0.0/utils";
 
-import type { Denops } from "jsr:@denops/core@^7.0.0";
-import * as fn from "jsr:@denops/std@7.0.1/function";
+import type { Denops } from "jsr:@denops/core@~7.0.0";
+import * as fn from "jsr:@denops/std@~7.1.1/function";
 
-import { assertEquals } from "jsr:@std/assert@1.0.1";
+import { assertEquals } from "jsr:@std/assert@~1.0.3/equals";
 
 function calcScore(
   str: string,
@@ -50,7 +47,7 @@ export class Filter extends BaseFilter<Params> {
     const currentLine = (await args.denops.call("line", ".")) as number;
     const minLines = Math.max(1, currentLine - maxSize);
     const maxLines = Math.min(
-      (await fn.line(args.denops, "$")),
+      await fn.line(args.denops, "$"),
       currentLine + maxSize,
     );
 
@@ -101,7 +98,9 @@ export class Filter extends BaseFilter<Params> {
     }));
   }
 
-  override params(): Params { return {}; }
+  override params(): Params {
+    return {};
+  }
 }
 
 Deno.test("calcScore", () => {
