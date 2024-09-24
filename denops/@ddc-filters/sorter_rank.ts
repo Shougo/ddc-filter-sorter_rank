@@ -35,7 +35,7 @@ const COLUMNS_MAX = 150;
 type Params = Record<string, never>;
 
 export class Filter extends BaseFilter<Params> {
-  events = ["InsertEnter"] as never[];
+  override events = ["InsertEnter"] as never[];
 
   _cache: Record<string, number> = {};
 
