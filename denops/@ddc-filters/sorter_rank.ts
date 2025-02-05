@@ -1,9 +1,9 @@
-import { type DdcOptions, type Item } from "jsr:@shougo/ddc-vim@~7.0.0/types";
-import { BaseFilter } from "jsr:@shougo/ddc-vim@~7.0.0/filter";
-import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@~7.0.0/utils";
+import { type DdcOptions, type Item } from "jsr:@shougo/ddc-vim@~9.1.0/types";
+import { BaseFilter } from "jsr:@shougo/ddc-vim@~9.1.0/filter";
+import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@~9.1.0/utils";
 
 import type { Denops } from "jsr:@denops/core@~7.0.0";
-import * as fn from "jsr:@denops/std@~7.1.1/function";
+import * as fn from "jsr:@denops/std@~7.4.0/function";
 
 import { assertEquals } from "jsr:@std/assert@~1.0.3/equals";
 
@@ -92,10 +92,19 @@ export class Filter extends BaseFilter<Params> {
 
     const linenr = await fn.line(args.denops, ".");
 
-    return Promise.resolve(args.items.sort((a, b) => {
-      return calcScore(b.word, args.completeStr, this._cache, linenr) -
-        calcScore(a.word, args.completeStr, this._cache, linenr);
-    }));
+    const scores: Record<string, number> = {};
+    for (const item of args.items) {
+      scores[item.word] = calcScore(
+        item.word,
+        args.completeStr,
+        this._cache,
+        linenr,
+      );
+    }
+
+    return Promise.resolve(
+      args.items.sort((a, b) => scores[b.word] - scores[a.word]),
+    );
   }
 
   override params(): Params {
