@@ -1,9 +1,9 @@
-import { type DdcOptions, type Item } from "jsr:@shougo/ddc-vim@~9.1.0/types";
-import { BaseFilter } from "jsr:@shougo/ddc-vim@~9.1.0/filter";
-import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@~9.1.0/utils";
+import { type DdcOptions, type Item } from "jsr:@shougo/ddc-vim@~9.5.0/types";
+import { BaseFilter } from "jsr:@shougo/ddc-vim@~9.5.0/filter";
+import { convertKeywordPattern } from "jsr:@shougo/ddc-vim@~9.5.0/utils";
 
 import type { Denops } from "jsr:@denops/core@~7.0.0";
-import * as fn from "jsr:@denops/std@~7.4.0/function";
+import * as fn from "jsr:@denops/std@~7.6.0/function";
 
 import { assertEquals } from "jsr:@std/assert@~1.0.3/equals";
 
