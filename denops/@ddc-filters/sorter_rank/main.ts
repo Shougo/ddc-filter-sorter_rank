@@ -112,6 +112,41 @@ export class Filter extends BaseFilter<Params> {
   }
 }
 
-Deno.test("calcScore", () => {
-  assertEquals(calcScore("", "", {}, 0), 100);
+Deno.test("calcScore: empty", () => {
+  assertEquals(calcScore("", "", {}, 0), 200);
+});
+
+Deno.test("calcScore: prefix match", () => {
+  // +200 - 6
+  assertEquals(calcScore("abc", "a", {}, 0), 194);
+});
+
+Deno.test("calcScore: case-insensitive prefix match", () => {
+  // +60 - 6
+  assertEquals(calcScore("Abc", "a", {}, 0), 54);
+});
+
+Deno.test("calcScore: case-insensitive partial match", () => {
+  // +20 - 6
+  assertEquals(calcScore("xAbc", "a", {}, 0), 12);
+});
+
+Deno.test("calcScore: no match", () => {
+  // 0 - 6
+  assertEquals(calcScore("xyz", "a", {}, 0), -6);
+});
+
+Deno.test("calcScore: cache bonus near current line", () => {
+  // prefix +200, len penalty -6, cache +(150 - |10-12|)=+148
+  assertEquals(calcScore("abc", "a", { abc: 10 }, 12), 342);
+});
+
+Deno.test("calcScore: cache bonus far from current line can be negative", () => {
+  // prefix +200, len penalty -6, cache +(150 - |10-500|)= -340
+  assertEquals(calcScore("abc", "a", { abc: 10 }, 500), -146);
+});
+
+Deno.test("calcScore: completeStr empty still counts as prefix", () => {
+  // "" is prefix of any string: +200 - 6
+  assertEquals(calcScore("abc", "", {}, 0), 194);
 });
